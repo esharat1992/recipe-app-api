@@ -1,38 +1,42 @@
-# ---
-# name: Checks
-# on: [push]
-# jobs:
-#   test-lint:
-#     name: Test and Lint
-#     runs-on: ubuntu-20.04
-#     steps:
-#       - name: Login to docker hub
-#         uses: docker/login-action@v1
-#         with:
-#            username: ${{secrets.DOCKERHUB_USER}}
-#            password: ${{secrets.DOCKERHUB_TOKEN}}
-#       - name: Checkout
-#         uses: action/checkout@v2
-#       - name: Test
-#         run: docker compose run --rm app sh -c "python manage.py test"
-#       - name: Lint
-#         run: docker compose run --rm app sh -c "flake8"
-        
-
-name: CI
-
-on:
-  push:
-    branches:
-      - main
+name: Checks
+on: [push]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  test-lint:
+    name: Test and Lint
+    runs-on: ubuntu-20.04
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2  # Make sure to use the correct repository for checkout
 
-    - name: Run a one-line script
-      run: echo "Hello, world!"
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}  # Use correct syntax for secrets
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Run Tests
+        run: docker-compose run --rm app sh -c "python manage.py test"  # Make sure 'docker-compose' is spelled correctly
+
+      - name: Lint Code
+        run: docker-compose run --rm app sh -c "flake8"  # Check if 'flake8' is installed in your Docker image
+
+
+# name: CI
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v2
+
+#     - name: Run a one-line script
+#       run: echo "Hello, world!"
