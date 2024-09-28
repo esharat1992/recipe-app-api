@@ -17,10 +17,10 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Run Tests
-        run: docker-compose run --rm app sh -c "python manage.py test"  # Make sure 'docker-compose' is spelled correctly
+        run: docker compose run --rm app sh -c "python manage.py test"  # Make sure 'docker-compose' is spelled correctly
 
       - name: Lint Code
-        run: docker-compose run --rm app sh -c "flake8"  # Check if 'flake8' is installed in your Docker image
+        run: docker compose run --rm app sh -c "flake8"  # Check if 'flake8' is installed in your Docker image
 
 
 # name: CI
