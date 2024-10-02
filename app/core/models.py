@@ -23,6 +23,14 @@ class UserManager(BaseUserManager):
         else:
             raise ValueError("You must input your g-suite email address.")
 
+    def create_superuser(self, email, password):
+        """Create super user"""
+        user = self.create_user(email, password)
+        user.is_staff = True
+        user.is_superuser = True
+        user.save(using=self._db)
+        return user
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     """User in the System"""
