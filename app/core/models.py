@@ -10,12 +10,18 @@ class UserManager(BaseUserManager):
     """Manager for users"""
 
     def create_user(self, email, password=None, **extra_fields):
-        "Create, save and return a new user."
-        user = self.model(email=self.normalize_email(email), **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-
-        return user
+        """Create, save and return a new user."""
+        email = email.lower()
+        if "@g.bracu.ac.bd" in email or "@bracu.ac.bd" in email:
+            user = self.model(
+                email=self.normalize_email(email),
+                **extra_fields
+                )
+            user.set_password(password)
+            user.save(using=self._db)
+            return user
+        else:
+            raise ValueError("You must input your g-suite email address.")
 
 
 class User(AbstractBaseUser, PermissionsMixin):
