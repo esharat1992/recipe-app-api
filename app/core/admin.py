@@ -25,7 +25,7 @@ class UserAdmin(BaseUserAdmin):
         ),
         (_('Important dates'), {'fields': ('last_login',)}),
     )
-    readonly_fields = ['last_login','email']
+    readonly_fields = ['last_login', 'email']
 
 
 admin.site.register(models.User, UserAdmin)
