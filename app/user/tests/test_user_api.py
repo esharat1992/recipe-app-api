@@ -8,6 +8,9 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
 
+from decimal import Decimal
+from core import models
+
 CREATE_USER_URL = reverse('user:create')
 TOKEN_URL = reverse('user:token')
 Me_URL = reverse('user:me')
@@ -149,3 +152,19 @@ class PrivateUserAPITest(TestCase):
         self.assertEqual(self.user.name, payload['name'])
         self.assertTrue(self.user.check_password(payload['password']))
         self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+    def test_create_recipe(self):
+        """Test creating a recipe is successful."""
+        user = get_user_model().objects.create_user(
+            'test@bracu.ac.bd',
+            'testpass123',
+        )
+        recipe = models.Recipe.objects.create(
+            user=user,
+            title='Sample recipe name',
+            require_time=10,
+            price=Decimal('2.32'),
+            description="sample recipe details.",
+        )
+
+        self.assertEqual(str(recipe), recipe.title)
